@@ -7,6 +7,7 @@ Description: Programme principal qui s'éxecute sur le STM32
 //librairies
 #include "stm32f10x.h"
 #include "MyGPIO.h"
+#include "MyTimer.h"
 
 //Boucle principale
 int main(void)
