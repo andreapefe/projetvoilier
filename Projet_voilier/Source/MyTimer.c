@@ -82,34 +82,54 @@ void MyTimer_ActiveIT(TIM_TypeDef*Timer ,char Prio ,void(*IT_function )(void))
 
 void MyTimer_PWM(TIM_TypeDef*Timer, char Channel )
 {
-    
-   	 Timer->CCMR1 &= ~(0x7 << 0x4);    //CCRM1 pour choisir le mode qu'on veut (ici PWM output)
-   	 Timer->CCMR1 |= (0x6 <<0x4);
+		 MyGPIO_Struct_TypeDef channel; //variable de configuration de port
 
    	 if (Timer == TIM1)
     {
-   	 Timer->BDTR |= (0x1 << 0xF);
+			Timer->BDTR |= (0x1 << 0xF);
    	 
    	 //for channel GPIO pin mapping see p178 of RM
-   	 if (Channel == 1)
-   	 {
-   		 GPIOA->CRH &= 0000;
-   		 GPIOA->CRH |= 1001;  //set the associated output pin channel to alternate output push pull
-   	 }
+			if (Channel == 1)
+			{
+				Timer->CCER |= 1; //enable channel 1
+				Timer->CCMR1 &= ~(0x7 << 0x4);    //CCRM1 pour choisir le mode qu'on veut (ici PWM output)
+				Timer->CCMR1 |= (0x6 <<0x4);      //channel 1 choisi
+			 
+				//set the associated output pin channel to alternate output push pull
+				channel.GPIO = GPIOA;
+				channel.GPIO_Pin = 8;
+				channel.GPIO_Conf = AltOut_Ppull;
+																		
+			}
    	 else if (Channel == 2)
    	 {
-   		 GPIOA->CRH &= ~(0xF << 0x4);
-   		 GPIOA->CRH |= (1001 << 0x4); 							 //set the associated output pin channel to alternate output push pull
+			 Timer->CCER |= (1<<4); //enable channel 2
+			 Timer->CCMR1 &= ~(0x7 << 0xC);    //CCRM1 pour choisir le mode qu'on veut (ici PWM output)
+			 Timer->CCMR1 |= (0x6 <<0xC);
+			 
+   		 channel.GPIO = GPIOA;
+			 channel.GPIO_Pin = 9;
+			 channel.GPIO_Conf = AltOut_Ppull; 							 //set the associated output pin channel to alternate output push pull
    	 }
    	 else if (Channel == 3)
    	 {
-   		 GPIOA->CRH &= ~(0xF << 0x8);
-   		 GPIOA->CRH |= (1001 << 0x8); 							 //set the associated output pin channel to alternate output push pull
+			 Timer->CCER |= (1<<8); //enable channel 3
+			 Timer->CCMR2 &= ~(0x7 << 0x4);    //CCRM2 pour choisir le mode qu'on veut (ici PWM output)
+			 Timer->CCMR2 |= (0x6 <<0x4);      //channel 3 choisi
+			 
+   		 channel.GPIO = GPIOA;
+			 channel.GPIO_Pin = 10;
+			 channel.GPIO_Conf = AltOut_Ppull;						 //set the associated output pin channel to alternate output push pull
    	 }
    	 else if (Channel == 4)
    	 {
-   		 GPIOA->CRH &= ~(0xF << 0xC);
-   		 GPIOA->CRH |= (1001 << 0xC); 							 //set the associated output pin channel to alternate output push pull
+			 Timer->CCER |= (1<<12); //enable channel 4
+			 Timer->CCMR2 &= ~(0x7 << 0xC);    //CCRM2 pour choisir le mode qu'on veut (ici PWM output)
+			 Timer->CCMR2 |= (0x6 <<0xC);      //channel 4 choisi
+			 
+   		 channel.GPIO = GPIOA;
+			 channel.GPIO_Pin = 11;
+			 channel.GPIO_Conf = AltOut_Ppull; 							 //set the associated output pin channel to alternate output push pull
    	 }
 
     }
@@ -119,23 +139,43 @@ void MyTimer_PWM(TIM_TypeDef*Timer, char Channel )
    	 //for channel GPIO pin mapping see p178 of RM
    	 if (Channel == 1)
    	 {
-   		 GPIOA->CRL &= 0000;
-   		 GPIOA->CRL |= 1001;  //set the associated output pin channel to alternate output push pull
+			 Timer->CCER |= 1;   //enable channel 1
+			 Timer->CCMR1 &= ~(0x7 << 0x4);    //CCRM1 pour choisir le mode qu'on veut (ici PWM output)
+			 Timer->CCMR1 |= (0x6 <<0x4);      //channel 1 choisi
+			 
+   		 channel.GPIO = GPIOA;
+			 channel.GPIO_Pin = 0;
+			 channel.GPIO_Conf = AltOut_Ppull;  //set the associated output pin channel to alternate output push pull
    	 }
    	 else if (Channel == 2)
    	 {
-   		 GPIOA->CRL &= ~(0xF << 0x4);
-   		 GPIOA->CRL |= (1001 << 0x4); 							 //set the associated output pin channel to alternate output push pull
+			 Timer->CCER |= (1<<4); //enable channel 2
+			 Timer->CCMR1 &= ~(0x7 << 0xC);    //CCRM1 pour choisir le mode qu'on veut (ici PWM output)
+			 Timer->CCMR1 |= (0x6 <<0xC); //au channel 2
+			 
+   		 channel.GPIO = GPIOA;
+			 channel.GPIO_Pin = 1;
+			 channel.GPIO_Conf = AltOut_Ppull; 							 //set the associated output pin channel to alternate output push pull
    	 }
    	 else if (Channel == 3)
    	 {
-   		 GPIOA->CRL &= ~(0xF << 0x8);
-   		 GPIOA->CRL |= (1001 << 0x8); 							 //set the associated output pin channel to alternate output push pull
+			 Timer->CCER |= (1<<8); //enable channel 3
+			 Timer->CCMR2 &= ~(0x7 << 0x4);    //CCRM2 pour choisir le mode qu'on veut (ici PWM output)
+			 Timer->CCMR2 |= (0x6 <<0x4);      //channel 3 choisi
+			 
+   		 channel.GPIO = GPIOA;
+			 channel.GPIO_Pin = 2;
+			 channel.GPIO_Conf = AltOut_Ppull; 							 //set the associated output pin channel to alternate output push pull
    	 }
    	 else if (Channel == 4)
    	 {
-   		 GPIOA->CRL &= ~(0xF << 0xC);
-   		 GPIOA->CRL |= (1001 << 0xC); 							 //set the associated output pin channel to alternate output push pull
+			 Timer->CCER |= (1<<12);
+			 Timer->CCMR2 &= ~(0x7 << 0xC);    //CCRM2 pour choisir le mode qu'on veut (ici PWM output)
+			 Timer->CCMR2 |= (0x6 <<0xC);      //channel 4 choisi
+			 
+   		 channel.GPIO = GPIOA;
+			 channel.GPIO_Pin = 3;
+			 channel.GPIO_Conf = AltOut_Ppull;							 //set the associated output pin channel to alternate output push pull
    	 }
     }
     
@@ -144,53 +184,175 @@ void MyTimer_PWM(TIM_TypeDef*Timer, char Channel )
    	 //for channel GPIO pin mapping see p178 of RM
    	 if (Channel == 1)
    	 {
-   		 GPIOA->CRL &= ~(0xF << 0x18);
-   		 GPIOA->CRL |= (0x9 << 0x18);         		 //set the associated output pin channel to alternate output push pull
+			 Timer->CCER |= 1; //enbale channel 1
+			 Timer->CCMR1 &= ~(0x7 << 0x4);    //CCRM1 pour choisir le mode qu'on veut (ici PWM output)
+			 Timer->CCMR1 |= (0x6 <<0x4);      //channel 1 choisi
+			 
+   		 channel.GPIO = GPIOA;
+			 channel.GPIO_Pin = 6;
+			 channel.GPIO_Conf = AltOut_Ppull;        		 //set the associated output pin channel to alternate output push pull
    	 }
    	 else if (Channel == 2)
    	 {
-   		 GPIOA->CRL &= ~(0xF << 0x1C);
-   		 GPIOA->CRL |= (0X9 << 0x1C); 			 //set the associated output pin channel to alternate output push pull
+			 Timer->CCER |= (1<<4); //enable channel 2
+			 Timer->CCMR1 &= ~(0x7 << 0xC);    //CCRM1 pour choisir le mode qu'on veut (ici PWM output)
+			 Timer->CCMR1 |= (0x6 <<0xC); //au channel 2
+			 
+   		 channel.GPIO = GPIOA;
+			 channel.GPIO_Pin = 7;
+			 channel.GPIO_Conf = AltOut_Ppull;		 //set the associated output pin channel to alternate output push pull
    	 }
    	 else if (Channel == 3)
    	 {
-   		 GPIOB->CRL &= 0000;
-   		 GPIOB->CRL |= 1001 ; 							 //set the associated output pin channel to alternate output push pull
+			 Timer->CCER |= (1<<8); //enable channel 3
+			 Timer->CCMR2 &= ~(0x7 << 0x4);    //CCRM2 pour choisir le mode qu'on veut (ici PWM output)
+			 Timer->CCMR2 |= (0x6 <<0x4);      //channel 3 choisi
+			 
+   		 channel.GPIO = GPIOB;
+			 channel.GPIO_Pin = 0;
+			 channel.GPIO_Conf = AltOut_Ppull;							 //set the associated output pin channel to alternate output push pull
    	 }
    	 else if (Channel == 4)
    	 {
-   		 GPIOB->CRL &= ~(0xF << 0x4);
-   		 GPIOB->CRL |= (1001 << 0x4);    			 //set the associated output pin channel to alternate output push pull
+			 Timer->CCER |= (1<<12);
+			 Timer->CCMR2 &= ~(0x7 << 0xC);    //CCRM2 pour choisir le mode qu'on veut (ici PWM output)
+			 Timer->CCMR2 |= (0x6 <<0xC);      //channel 4 choisi
+			 
+   		 channel.GPIO = GPIOB;
+			 channel.GPIO_Pin = 1;
+			 channel.GPIO_Conf = AltOut_Ppull;    			 //set the associated output pin channel to alternate output push pull
    	 }
    							 
     }
     else if (Timer == TIM4)
     {
+			
    	 //for channel GPIO pin mapping see p178 of RM
    	 if (Channel == 1)
    	 {
-   		 GPIOB->CRL &= ~(0xF << 0x18);
-   		 GPIOB->CRL |= (0x9 << 0x18);         		 //set the associated output pin channel to alternate output push pull
+			 Timer->CCER |= 1;
+			 Timer->CCMR1 &= ~(0x7 << 0x4);    //CCRM1 pour choisir le mode qu'on veut (ici PWM output)
+			 Timer->CCMR1 |= (0x6 <<0x4);      //channel 1 choisi
+			 
+   		 channel.GPIO = GPIOB;
+			 channel.GPIO_Pin = 6;
+			 channel.GPIO_Conf = AltOut_Ppull;       		 //set the associated output pin channel to alternate output push pull
    	 }
    	 else if (Channel == 2)
    	 {
-   		 GPIOB->CRL &= ~(0xF << 0x1C);
-   		 GPIOB->CRL |= (0x9 << 0x1C); 			 //set the associated output pin channel to alternate output push pull
+			 Timer->CCER |= (1<<4);
+			 Timer->CCMR1 &= ~(0x7 << 0xC);    //CCRM1 pour choisir le mode qu'on veut (ici PWM output)
+			 Timer->CCMR1 |= (0x6 <<0xC); //au channel 2
+			 
+   		 channel.GPIO = GPIOB;
+			 channel.GPIO_Pin = 7;
+			 channel.GPIO_Conf = AltOut_Ppull; 			 //set the associated output pin channel to alternate output push pull
    	 }
    	 else if (Channel == 3)
    	 {
-   		 GPIOB->CRH &= 0000;
-   		 GPIOB->CRH |= 1001 ; 							 //set the associated output pin channel to alternate output push pull
+			 Timer->CCER |= (1<<8); //enable channel 3
+			 Timer->CCMR2 &= ~(0x7 << 0x4);    //CCRM2 pour choisir le mode qu'on veut (ici PWM output)
+			 Timer->CCMR2 |= (0x6 <<0x4);      //channel 3 choisi
+			 
+   		 channel.GPIO = GPIOB;
+			 channel.GPIO_Pin = 8;
+			 channel.GPIO_Conf = AltOut_Ppull; 							 //set the associated output pin channel to alternate output push pull
    	 }
    	 else if (Channel == 4)
    	 {
-   		 GPIOB->CRH &= ~(0xF << 0x4);
-   		 GPIOB->CRH |= (1001 << 0x4);    			 //set the associated output pin channel to alternate output push pull
+			 Timer->CCER |= (1<<12);
+			 Timer->CCMR2 &= ~(0x7 << 0xC);    //CCRM2 pour choisir le mode qu'on veut (ici PWM output)
+			 Timer->CCMR2 |= (0x6 <<0xC);      //channel 4 choisi
+			 
+   		 channel.GPIO = GPIOB;
+			 channel.GPIO_Pin = 9;
+			 channel.GPIO_Conf = AltOut_Ppull;    			 //set the associated output pin channel to alternate output push pull
    	 }
    							 //set the associated output pin channel to alternate output push pull
     }
-    
 
+		MyGPIO_Init(&channel); //initialize clock and configure port
 }
+
+void change_ratio(TIM_TypeDef*Timer, float ratio, char channel)
+{
+	unsigned compare = (int) (Timer->ARR * ratio);
+	if (channel == 1)
+	{
+		Timer->CCR1 |= compare; 
+	}
+	else if (channel == 2)
+	{
+		Timer->CCR2 |= compare; 
+	} 
+	else if (channel == 3)
+	{
+		Timer->CCR3 |= compare; 
+	} 
+	else if (channel == 4)
+	{
+		Timer->CCR4 |= compare; 
+	}
+	
+}
+
+void input_capture_mode(MyTimer_Struct_TypeDef*timer_in)
+{
+	//Declaration for config port in input floating selon le timer
+	MyGPIO_Struct_TypeDef channel1;
+	MyGPIO_Struct_TypeDef channel2; //set both associated intput pin channel to input floating
+	
+	timer_in->Timer->CCMR1 |= 01; //config channel e1 1 en input
+	timer_in->Timer->CCMR1 |= (0x01 << 8); //config channel 2 en input
+	timer_in->Timer->SMCR |= 0x3;
+	
+	//Congif according to selected timer (only channel 1 and 2)
+	
+	if (timer_in->Timer == TIM1)
+    {
+   	 //for channel GPIO pin mapping see p178 of RM
+			channel1.GPIO = GPIOA;
+			channel1.GPIO_Pin = 8;
+			channel1.GPIO_Conf = In_Floating;
+																					 
+   		channel2.GPIO = GPIOA;
+			channel2.GPIO_Pin = 9;
+			channel2.GPIO_Conf = In_Floating; 							 
+   	 }
+    
+  else if (timer_in->Timer == TIM2)
+    {    	 
+   		 channel1.GPIO = GPIOA;
+			 channel1.GPIO_Pin = 0;
+			 channel1.GPIO_Conf = In_Floating;     	 
+   	 
+   		 channel2.GPIO = GPIOA;
+			 channel2.GPIO_Pin = 1;
+			 channel2.GPIO_Conf = In_Floating; 							   	 
+    }
+    
+    else if (timer_in->Timer == TIM3)
+    {			 
+   		 channel1.GPIO = GPIOA;
+			 channel1.GPIO_Pin = 6;
+			 channel1.GPIO_Conf = In_Floating;        		 
+   	    	 
+   		 channel2.GPIO = GPIOA;
+			 channel2.GPIO_Pin = 7;
+			 channel2.GPIO_Conf = In_Floating;		 					 
+    }
+		
+    else if (timer_in->Timer == TIM4)
+    {			 
+   		 channel1.GPIO = GPIOB;
+			 channel1.GPIO_Pin = 6;
+			 channel1.GPIO_Conf = In_Floating;       		 
+   	 		 
+   		 channel2.GPIO = GPIOB;
+			 channel2.GPIO_Pin = 7;
+			 channel2.GPIO_Conf = In_Floating; 			 	
+    }
+}
+
 
 

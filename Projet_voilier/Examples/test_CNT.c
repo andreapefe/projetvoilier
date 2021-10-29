@@ -20,6 +20,7 @@ int main(void)
 	//Déclaration structures des ports  timer
 	MyGPIO_Struct_TypeDef port_cc1; //channel 1 de TIM2 (PA0)
 	MyGPIO_Struct_TypeDef port_cc2; //channnel 2 de TIM2 (PA1)
+	MyGPIO_Struct_TypeDef port_zero; //zero pour calibration
 	MyTimer_Struct_TypeDef timer_in; //TIM2
 	
 	//Définition des ports et timers
@@ -30,6 +31,10 @@ int main(void)
 	port_cc2.GPIO = GPIOA;
 	port_cc2.GPIO_Pin = 1;
 	port_cc2.GPIO_Conf = In_Floating;
+	
+	port_zero.GPIO = GPIOA;
+	port_zero.GPIO_Pin = 2;
+	port_zero.GPIO_Conf = In_Floating;
 	
 	timer_in.Timer = TIM2;
 	timer_in.shortARR = 359; //degrés un tour (mod 360 automatique)
@@ -47,6 +52,8 @@ int main(void)
 	//MyGPIO_Init(&port_led);
 	//MyGPIO_Init(&port_but);
 	//timer_in.Timer->DIER |= (1 << 10); //active DMA 
+	
+	
 	
 	
 	do{

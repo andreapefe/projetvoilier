@@ -403,7 +403,15 @@
               <FileType>1</FileType>
               <FilePath>.\Source\MyTimer.c</FilePath>
             </File>
+            <File>
+              <FileName>MyAngles.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\MyAngles.c</FilePath>
+            </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>Examples</GroupName>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>
@@ -541,11 +549,11 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>-1</DriverSelection>
+            <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -810,7 +818,15 @@
               <FileType>1</FileType>
               <FilePath>.\Source\MyTimer.c</FilePath>
             </File>
+            <File>
+              <FileName>MyAngles.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\MyAngles.c</FilePath>
+            </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>Examples</GroupName>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>
