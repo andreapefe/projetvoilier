@@ -4,6 +4,8 @@ Component: ARM Compiler 5.06 update 7 (build 960) Tool: armlink [4d3601]
 
 Section Cross References
 
+    main.o(i.main) refers to mytimer.o(i.MyTimer_Base_Init) for MyTimer_Base_Init
+    main.o(i.main) refers to main.o(.data) for angle
     mytimer.o(i.MyTimer_ActiveIT) refers to mytimer.o(i.__NVIC_EnableIRQ) for __NVIC_EnableIRQ
     mytimer.o(i.MyTimer_ActiveIT) refers to mytimer.o(i.__NVIC_SetPriority) for __NVIC_SetPriority
     mytimer.o(i.MyTimer_ActiveIT) refers to mytimer.o(.data) for pFnc
@@ -59,7 +61,6 @@ Removing Unused input sections from the image.
     Removing mytimer.o(.revsh_text), (4 bytes).
     Removing mytimer.o(.rrx_text), (6 bytes).
     Removing mytimer.o(i.MyTimer_ActiveIT), (136 bytes).
-    Removing mytimer.o(i.MyTimer_Base_Init), (112 bytes).
     Removing mytimer.o(i.MyTimer_PWM), (604 bytes).
     Removing mytimer.o(i.__NVIC_EnableIRQ), (34 bytes).
     Removing mytimer.o(i.__NVIC_SetPriority), (40 bytes).
@@ -70,7 +71,7 @@ Removing Unused input sections from the image.
     Removing system_stm32f10x.o(i.SystemCoreClockUpdate), (164 bytes).
     Removing system_stm32f10x.o(.data), (20 bytes).
 
-25 unused section(s) (total 1812 bytes) removed from the image.
+24 unused section(s) (total 1700 bytes) removed from the image.
 
 ==============================================================================
 
@@ -80,24 +81,25 @@ Image Symbol Table
 
     Symbol Name                              Value     Ov Type        Size  Object(Section)
 
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry12b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry12a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry2.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry12a.o ABSOLUTE
     RTE\Device\STM32F103RB\startup_stm32f10x_md.s 0x00000000   Number         0  startup_stm32f10x_md.o ABSOLUTE
     RTE\Device\STM32F103RB\system_stm32f10x.c 0x00000000   Number         0  system_stm32f10x.o ABSOLUTE
     RTE\\Device\\STM32F103RB\\system_stm32f10x.c 0x00000000   Number         0  system_stm32f10x.o ABSOLUTE
+    Source\MyAngles.c                        0x00000000   Number         0  myangles.o ABSOLUTE
     Source\MyGPIO.c                          0x00000000   Number         0  mygpio.o ABSOLUTE
     Source\MyTimer.c                         0x00000000   Number         0  mytimer.o ABSOLUTE
     Source\\MyGPIO.c                         0x00000000   Number         0  mygpio.o ABSOLUTE
@@ -121,20 +123,22 @@ Image Symbol Table
     __lit__00000000                          0x08000100   Data           4  entry2.o(.ARM.Collect$$$$00002712)
     .text                                    0x08000104   Section       36  startup_stm32f10x_md.o(.text)
     .text                                    0x08000128   Section       36  init.o(.text)
-    i.SetSysClock                            0x0800014c   Section        0  system_stm32f10x.o(i.SetSysClock)
-    SetSysClock                              0x0800014d   Thumb Code     8  system_stm32f10x.o(i.SetSysClock)
-    i.SetSysClockTo72                        0x08000154   Section        0  system_stm32f10x.o(i.SetSysClockTo72)
-    SetSysClockTo72                          0x08000155   Thumb Code   214  system_stm32f10x.o(i.SetSysClockTo72)
-    i.SystemInit                             0x08000234   Section        0  system_stm32f10x.o(i.SystemInit)
-    i.TIM1_UP_IRQHandler                     0x08000294   Section        0  mytimer.o(i.TIM1_UP_IRQHandler)
-    i.TIM2_IRQHandler                        0x080002a8   Section        0  mytimer.o(i.TIM2_IRQHandler)
-    i.TIM3_IRQHandler                        0x080002bc   Section        0  mytimer.o(i.TIM3_IRQHandler)
-    i.TIM4_IRQHandler                        0x080002d0   Section        0  mytimer.o(i.TIM4_IRQHandler)
-    i.__scatterload_copy                     0x080002e4   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x080002f2   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x080002f4   Section       14  handlers.o(i.__scatterload_zeroinit)
-    i.main                                   0x08000302   Section        0  main.o(i.main)
-    .data                                    0x20000000   Section        4  mytimer.o(.data)
+    i.MyTimer_Base_Init                      0x0800014c   Section        0  mytimer.o(i.MyTimer_Base_Init)
+    i.SetSysClock                            0x080001bc   Section        0  system_stm32f10x.o(i.SetSysClock)
+    SetSysClock                              0x080001bd   Thumb Code     8  system_stm32f10x.o(i.SetSysClock)
+    i.SetSysClockTo72                        0x080001c4   Section        0  system_stm32f10x.o(i.SetSysClockTo72)
+    SetSysClockTo72                          0x080001c5   Thumb Code   214  system_stm32f10x.o(i.SetSysClockTo72)
+    i.SystemInit                             0x080002a4   Section        0  system_stm32f10x.o(i.SystemInit)
+    i.TIM1_UP_IRQHandler                     0x08000304   Section        0  mytimer.o(i.TIM1_UP_IRQHandler)
+    i.TIM2_IRQHandler                        0x08000318   Section        0  mytimer.o(i.TIM2_IRQHandler)
+    i.TIM3_IRQHandler                        0x0800032c   Section        0  mytimer.o(i.TIM3_IRQHandler)
+    i.TIM4_IRQHandler                        0x08000340   Section        0  mytimer.o(i.TIM4_IRQHandler)
+    i.__scatterload_copy                     0x08000354   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x08000362   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x08000364   Section       14  handlers.o(i.__scatterload_zeroinit)
+    i.main                                   0x08000374   Section        0  main.o(i.main)
+    .data                                    0x20000000   Section        2  main.o(.data)
+    .data                                    0x20000004   Section        4  mytimer.o(.data)
     STACK                                    0x20000008   Section     1024  startup_stm32f10x_md.o(STACK)
 
     Global Symbols
@@ -213,18 +217,20 @@ Image Symbol Table
     WWDG_IRQHandler                          0x0800011f   Thumb Code     0  startup_stm32f10x_md.o(.text)
     __scatterload                            0x08000129   Thumb Code    28  init.o(.text)
     __scatterload_rt2                        0x08000129   Thumb Code     0  init.o(.text)
-    SystemInit                               0x08000235   Thumb Code    78  system_stm32f10x.o(i.SystemInit)
-    TIM1_UP_IRQHandler                       0x08000295   Thumb Code    16  mytimer.o(i.TIM1_UP_IRQHandler)
-    TIM2_IRQHandler                          0x080002a9   Thumb Code    16  mytimer.o(i.TIM2_IRQHandler)
-    TIM3_IRQHandler                          0x080002bd   Thumb Code    16  mytimer.o(i.TIM3_IRQHandler)
-    TIM4_IRQHandler                          0x080002d1   Thumb Code    16  mytimer.o(i.TIM4_IRQHandler)
-    __scatterload_copy                       0x080002e5   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x080002f3   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x080002f5   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    main                                     0x08000303   Thumb Code     4  main.o(i.main)
-    Region$$Table$$Base                      0x08000308   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08000328   Number         0  anon$$obj.o(Region$$Table)
-    pFnc                                     0x20000000   Data           4  mytimer.o(.data)
+    MyTimer_Base_Init                        0x0800014d   Thumb Code    94  mytimer.o(i.MyTimer_Base_Init)
+    SystemInit                               0x080002a5   Thumb Code    78  system_stm32f10x.o(i.SystemInit)
+    TIM1_UP_IRQHandler                       0x08000305   Thumb Code    16  mytimer.o(i.TIM1_UP_IRQHandler)
+    TIM2_IRQHandler                          0x08000319   Thumb Code    16  mytimer.o(i.TIM2_IRQHandler)
+    TIM3_IRQHandler                          0x0800032d   Thumb Code    16  mytimer.o(i.TIM3_IRQHandler)
+    TIM4_IRQHandler                          0x08000341   Thumb Code    16  mytimer.o(i.TIM4_IRQHandler)
+    __scatterload_copy                       0x08000355   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x08000363   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x08000365   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    main                                     0x08000375   Thumb Code   102  main.o(i.main)
+    Region$$Table$$Base                      0x080003e4   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x08000404   Number         0  anon$$obj.o(Region$$Table)
+    angle                                    0x20000000   Data           2  main.o(.data)
+    pFnc                                     0x20000004   Data           4  mytimer.o(.data)
     __initial_sp                             0x20000408   Data           0  startup_stm32f10x_md.o(STACK)
 
 
@@ -235,53 +241,55 @@ Memory Map of the image
 
   Image Entry point : 0x08000105
 
-  Load Region LR_1 (Base: 0x08000000, Size: 0x0000032c, Max: 0xffffffff, ABSOLUTE)
+  Load Region LR_1 (Base: 0x08000000, Size: 0x0000040c, Max: 0xffffffff, ABSOLUTE)
 
-    Execution Region ER_RO (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00000328, Max: 0xffffffff, ABSOLUTE)
-
-    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
-
-    0x08000000   0x08000000   0x000000ec   Data   RO          187    RESET               startup_stm32f10x_md.o
-    0x080000ec   0x080000ec   0x00000000   Code   RO          238  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x080000ec   0x080000ec   0x00000004   Code   RO          241    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
-    0x080000f0   0x080000f0   0x00000004   Code   RO          244    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x080000f4   0x080000f4   0x00000000   Code   RO          246    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x080000f4   0x080000f4   0x00000000   Code   RO          248    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x080000f4   0x080000f4   0x00000008   Code   RO          249    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x080000fc   0x080000fc   0x00000004   Code   RO          256    .ARM.Collect$$$$0000000E  mc_w.l(entry12b.o)
-    0x08000100   0x08000100   0x00000000   Code   RO          251    .ARM.Collect$$$$0000000F  mc_w.l(entry10a.o)
-    0x08000100   0x08000100   0x00000000   Code   RO          253    .ARM.Collect$$$$00000011  mc_w.l(entry11a.o)
-    0x08000100   0x08000100   0x00000004   Code   RO          242    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
-    0x08000104   0x08000104   0x00000024   Code   RO          188  * .text               startup_stm32f10x_md.o
-    0x08000128   0x08000128   0x00000024   Code   RO          257    .text               mc_w.l(init.o)
-    0x0800014c   0x0800014c   0x00000008   Code   RO          195    i.SetSysClock       system_stm32f10x.o
-    0x08000154   0x08000154   0x000000e0   Code   RO          196    i.SetSysClockTo72   system_stm32f10x.o
-    0x08000234   0x08000234   0x00000060   Code   RO          198    i.SystemInit        system_stm32f10x.o
-    0x08000294   0x08000294   0x00000014   Code   RO          114    i.TIM1_UP_IRQHandler  mytimer.o
-    0x080002a8   0x080002a8   0x00000014   Code   RO          115    i.TIM2_IRQHandler   mytimer.o
-    0x080002bc   0x080002bc   0x00000014   Code   RO          116    i.TIM3_IRQHandler   mytimer.o
-    0x080002d0   0x080002d0   0x00000014   Code   RO          117    i.TIM4_IRQHandler   mytimer.o
-    0x080002e4   0x080002e4   0x0000000e   Code   RO          261    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x080002f2   0x080002f2   0x00000002   Code   RO          262    i.__scatterload_null  mc_w.l(handlers.o)
-    0x080002f4   0x080002f4   0x0000000e   Code   RO          263    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x08000302   0x08000302   0x00000004   Code   RO            4    i.main              main.o
-    0x08000306   0x08000306   0x00000002   PAD
-    0x08000308   0x08000308   0x00000020   Data   RO          259    Region$$Table       anon$$obj.o
-
-
-    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x08000328, Size: 0x00000004, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RO (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00000404, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x08000328   0x00000004   Data   RW          120    .data               mytimer.o
+    0x08000000   0x08000000   0x000000ec   Data   RO          196    RESET               startup_stm32f10x_md.o
+    0x080000ec   0x080000ec   0x00000000   Code   RO          247  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x080000ec   0x080000ec   0x00000004   Code   RO          250    .ARM.Collect$$$$00000001  mc_w.l(entry2.o)
+    0x080000f0   0x080000f0   0x00000004   Code   RO          253    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x080000f4   0x080000f4   0x00000000   Code   RO          255    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x080000f4   0x080000f4   0x00000000   Code   RO          257    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x080000f4   0x080000f4   0x00000008   Code   RO          258    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x080000fc   0x080000fc   0x00000004   Code   RO          265    .ARM.Collect$$$$0000000E  mc_w.l(entry12b.o)
+    0x08000100   0x08000100   0x00000000   Code   RO          260    .ARM.Collect$$$$0000000F  mc_w.l(entry10a.o)
+    0x08000100   0x08000100   0x00000000   Code   RO          262    .ARM.Collect$$$$00000011  mc_w.l(entry11a.o)
+    0x08000100   0x08000100   0x00000004   Code   RO          251    .ARM.Collect$$$$00002712  mc_w.l(entry2.o)
+    0x08000104   0x08000104   0x00000024   Code   RO          197  * .text               startup_stm32f10x_md.o
+    0x08000128   0x08000128   0x00000024   Code   RO          266    .text               mc_w.l(init.o)
+    0x0800014c   0x0800014c   0x00000070   Code   RO          118    i.MyTimer_Base_Init  mytimer.o
+    0x080001bc   0x080001bc   0x00000008   Code   RO          204    i.SetSysClock       system_stm32f10x.o
+    0x080001c4   0x080001c4   0x000000e0   Code   RO          205    i.SetSysClockTo72   system_stm32f10x.o
+    0x080002a4   0x080002a4   0x00000060   Code   RO          207    i.SystemInit        system_stm32f10x.o
+    0x08000304   0x08000304   0x00000014   Code   RO          120    i.TIM1_UP_IRQHandler  mytimer.o
+    0x08000318   0x08000318   0x00000014   Code   RO          121    i.TIM2_IRQHandler   mytimer.o
+    0x0800032c   0x0800032c   0x00000014   Code   RO          122    i.TIM3_IRQHandler   mytimer.o
+    0x08000340   0x08000340   0x00000014   Code   RO          123    i.TIM4_IRQHandler   mytimer.o
+    0x08000354   0x08000354   0x0000000e   Code   RO          270    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x08000362   0x08000362   0x00000002   Code   RO          271    i.__scatterload_null  mc_w.l(handlers.o)
+    0x08000364   0x08000364   0x0000000e   Code   RO          272    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x08000372   0x08000372   0x00000002   PAD
+    0x08000374   0x08000374   0x00000070   Code   RO            4    i.main              main.o
+    0x080003e4   0x080003e4   0x00000020   Data   RO          268    Region$$Table       anon$$obj.o
 
 
-    Execution Region ER_ZI (Exec base: 0x20000004, Load base: 0x0800032c, Size: 0x00000404, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RW (Exec base: 0x20000000, Load base: 0x08000404, Size: 0x00000008, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000004   0x0800032c   0x00000004   PAD
-    0x20000008        -       0x00000400   Zero   RW          185    STACK               startup_stm32f10x_md.o
+    0x20000000   0x08000404   0x00000002   Data   RW            5    .data               main.o
+    0x20000002   0x08000406   0x00000002   PAD
+    0x20000004   0x08000408   0x00000004   Data   RW          126    .data               mytimer.o
+
+
+    Execution Region ER_ZI (Exec base: 0x20000008, Load base: 0x0800040c, Size: 0x00000400, Max: 0xffffffff, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x20000008        -       0x00000400   Zero   RW          194    STACK               startup_stm32f10x_md.o
 
 
 ==============================================================================
@@ -291,15 +299,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-         4          0          0          0          0     207319   main.o
-        80         16          0          4          0       2202   mytimer.o
+       112         10          0          2          0     207603   main.o
+       192         34          0          4          0       2682   mytimer.o
         36          8        236          0       1024        808   startup_stm32f10x_md.o
        328         28          0          0          0       1981   system_stm32f10x.o
 
     ----------------------------------------------------------------------
-       450         52        268          4       1028     212310   Object Totals
+       668         80        268          8       1024     213074   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-         2          0          0          0          4          0   (incl. Padding)
+         0          0          0          2          0          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -318,8 +326,8 @@ Image component sizes
         36          8          0          0          0         68   init.o
 
     ----------------------------------------------------------------------
-        90         16          0          0          0         68   Library Totals
-         0          0          0          0          0          0   (incl. Padding)
+        92         16          0          0          0         68   Library Totals
+         2          0          0          0          0          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -328,7 +336,7 @@ Image component sizes
         90         16          0          0          0         68   mc_w.l
 
     ----------------------------------------------------------------------
-        90         16          0          0          0         68   Library Totals
+        92         16          0          0          0         68   Library Totals
 
     ----------------------------------------------------------------------
 
@@ -337,15 +345,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-       540         68        268          4       1028     212218   Grand Totals
-       540         68        268          4       1028     212218   ELF Image Totals
-       540         68        268          4          0          0   ROM Totals
+       760         96        268          8       1024     212930   Grand Totals
+       760         96        268          8       1024     212930   ELF Image Totals
+       760         96        268          8          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                  808 (   0.79kB)
+    Total RO  Size (Code + RO Data)                 1028 (   1.00kB)
     Total RW  Size (RW Data + ZI Data)              1032 (   1.01kB)
-    Total ROM Size (Code + RO Data + RW Data)        812 (   0.79kB)
+    Total ROM Size (Code + RO Data + RW Data)       1036 (   1.01kB)
 
 ==============================================================================
 

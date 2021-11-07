@@ -7,6 +7,7 @@ Léa Sheer, Andrea Pérez et Camille Noalletas
 #define TIMER_H
 
 #include "stm32f10x.h"
+#include "MyGPIO.h"
 //Structure du Timer
 typedef  struct{
     
@@ -35,6 +36,9 @@ void MyTimer_ActiveIT(TIM_TypeDef*Timer ,char Prio,void(*IT_function )(void) );
 void MyTimer_PWM(TIM_TypeDef*Timer, char Channel );
 
 //Fonction pour changer le ratio
+void change_ratio(TIM_TypeDef*Timer, float ratio, char channel);
 
+//Fonction input capture mode au 2 channel d'un timer (1 et 2)
+void input_capture_mode(MyTimer_Struct_TypeDef*timer_in);
 
 #endif
