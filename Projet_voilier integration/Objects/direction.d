@@ -12,3 +12,4 @@
 .\objects\direction.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\direction.o: .\Include\MyTimer.h
 .\objects\direction.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\direction.o: .\Include\Antichavirement.h

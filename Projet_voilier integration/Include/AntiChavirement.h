@@ -1,3 +1,11 @@
+/* ************************************
+Titre : 			Driver pour sytème antichavirement (F4)
+
+Auteur: 			Zaouali Mazin
+
+Description: 	Code pour mise en place su SPI et communcation avec capteur d'inertie
+***************************************** */
+
 #ifndef ANTICHAV_H
 #define ANTICHAV_H
 
@@ -39,6 +47,10 @@
 #define DATAZ1		0x37	//Z-Axis Data 1
 #define	FIFO_CTL	0x38	//FIFO control
 #define	FIFO_STATUS	0x39	//FIFO status
+
+#define TIM_DELAY TIM3
+#define ARR_1MS 71
+#define PSC_1MS 0
 
 
 void GPIO_Config (void);

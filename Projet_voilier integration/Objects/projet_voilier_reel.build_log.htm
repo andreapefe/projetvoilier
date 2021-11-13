@@ -22,47 +22,26 @@ Dialog DLL:      TCM.DLL V1.53.0.0
  
 <h2>Project:</h2>
 C:\Users\andre\Documents\Andrea\Projet_voilier integration\projet_voilier.uvprojx
-Project File Date:  11/10/2021
+Project File Date:  11/13/2021
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild target 'Reel'
 assembling startup_stm32f10x_md.s...
-compiling system_stm32f10x.c...
 compiling MyGPIO.c...
-compiling MyAngles.c...
+compiling system_stm32f10x.c...
+compiling plateau.c...
 compiling direction.c...
-.\Include\direction.h(11): warning:  #1295-D: Deprecated declaration configure_usart1_9600bps - give arg types
-  void configure_usart1_9600bps();
-.\Include\direction.h(13): warning:  #1295-D: Deprecated declaration configure_usart3_9600bps - give arg types
-  void configure_usart3_9600bps();
-.\Include\direction.h(21): warning:  #1295-D: Deprecated declaration configuration_usart3_9600_receive - give arg types
-  void configuration_usart3_9600_receive ();
-.\Include\direction.h(31): warning:  #1-D: last line of file ends without a newline
-  #endif
-Source\direction.c(93): warning:  #1-D: last line of file ends without a newline
-  	}
-Source\direction.c: 5 warnings, 0 errors
-compiling MyTimer.c...
 compiling main.c...
-.\Include\direction.h(11): warning:  #1295-D: Deprecated declaration configure_usart1_9600bps - give arg types
-  void configure_usart1_9600bps();
-.\Include\direction.h(13): warning:  #1295-D: Deprecated declaration configure_usart3_9600bps - give arg types
-  void configure_usart3_9600bps();
-.\Include\direction.h(21): warning:  #1295-D: Deprecated declaration configuration_usart3_9600_receive - give arg types
-  void configuration_usart3_9600_receive ();
-.\Include\direction.h(31): warning:  #1-D: last line of file ends without a newline
-  #endif
-Source\main.c(45): warning:  #177-D: variable "done"  was declared but never referenced
-  	int angle, done;
-Source\main.c: 5 warnings, 0 errors
 compiling AntiChavirement.c...
 Source\AntiChavirement.c(65): warning:  #550-D: variable "clear"  was set but never used
   	uint8_t clear; //unsigned char
 Source\AntiChavirement.c: 1 warning, 0 errors
+compiling MyTimer.c...
+compiling MyAngles.c...
 linking...
-Program Size: Code=7616 RO-data=536 RW-data=136 ZI-data=1024  
-".\Objects\projet_voilier_reel.axf" - 0 Error(s), 11 Warning(s).
+Program Size: Code=8872 RO-data=1184 RW-data=144 ZI-data=1024  
+".\Objects\projet_voilier_reel.axf" - 0 Error(s), 1 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -89,11 +68,11 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.5.0
 
    * Component: Keil::Device:Startup:1.0.0
+      Source file:   Device\Source\ARM\startup_stm32f10x_md.s
       Source file:   Device\Source\system_stm32f10x.c
       Include file:  RTE_Driver\Config\RTE_Device.h
       Source file:   Device\Source\ARM\STM32F1xx_OPT.s
-      Source file:   Device\Source\ARM\startup_stm32f10x_md.s
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

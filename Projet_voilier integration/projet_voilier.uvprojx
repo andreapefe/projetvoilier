@@ -418,6 +418,11 @@
               <FileType>1</FileType>
               <FilePath>.\Source\direction.c</FilePath>
             </File>
+            <File>
+              <FileName>plateau.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\plateau.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -842,6 +847,11 @@
               <FileName>direction.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\direction.c</FilePath>
+            </File>
+            <File>
+              <FileName>plateau.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\plateau.c</FilePath>
             </File>
           </Files>
         </Group>

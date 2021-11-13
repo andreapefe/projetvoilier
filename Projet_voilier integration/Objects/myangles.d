@@ -10,3 +10,7 @@
 .\objects\myangles.o: C:\Users\andre\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include\system_stm32f10x.h
 .\objects\myangles.o: .\Include\MyGPIO.h
 .\objects\myangles.o: .\Include\MyTimer.h
+.\objects\myangles.o: .\Include\direction.h
+.\objects\myangles.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\myangles.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\myangles.o: .\Include\Antichavirement.h
