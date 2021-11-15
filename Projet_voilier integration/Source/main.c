@@ -1,6 +1,6 @@
 /* *************************************************************
-Tire: Test compteur girouette pour Projet voilier 2021
-Auteurs: Andrea Pérez
+Tire: Projet voilier 2021
+Auteurs: Zaouali Mazin, Léa Scheer, Clément Sevillano et Andrea Pérez, 
 Description: Ce code permet de mettre en place le timer 2 pour lire l'angle de la 
 girouette sur le compteur. Dans cet example les channels utilisé sont le 1 et 2 car 
 c'est les seuls pour lesquels j'ai implémenté cette fonctionnalité
@@ -11,22 +11,22 @@ c'est les seuls pour lesquels j'ai implémenté cette fonctionnalité
 #include "MyGPIO.h"
 #include "MyTimer.h"
 #include "MyAngles.h"
-#include "stdlib.h" //no need
 #include "AntiChavirement.h" 
 #include "direction.h" 
-
-u16 pwm_out;
-u16 compteur;
+#include "plateau.h"
 
 //Varibles globales pour le SPI
 uint8_t RxData[6]; //Reception data
 uint16_t x,y,z; //valeurs axes
 float	x_acc,y_acc,z_acc; //valeurs axes
+uint8_t dataoff[1];
+
+//Variables pour surveiller en mode simulé
 float ratio;
 float result;
-uint8_t dataoff[1];
-//Messages
-int data_chavirement[]={32,32,67,72,65,86,73,82,69,77,69,78,84,32,68,69,84,69,67,84,69};
+
+//Messages en format ASCII
+int data_chavirement[SIZE_MESSAGE]={32,32,67,72,65,86,73,82,69,77,69,78,84,32,68,69,84,69,67,84,69};
 
 //Gestion de l'interruption pour remettre à zero la girouette
 void Remise_zero(void)
@@ -39,66 +39,47 @@ void Remise_zero(void)
 }
 
 
-//Boucle principale
+//Programme principale
 int main(void)
- {	
-	int angle, done;
-	int i;
+ {
+	//Variables auxiliaires
+	int angle;
+	int i, j;
 	
-	//Timers pour la girouette
+	/**** Configuration ******/
+	 
+	//Timers et GPIO pour la girouette
 	MyTimer_Struct_TypeDef timer_in; //TIM2	dans notre cas
 	MyTimer_Struct_TypeDef timer_pwm; //TIM4 dans notre cas
-	MyGPIO_Struct_TypeDef port_zero; // port PA10	
 	 
 	//Timer PWM plateau
 	MyTimer_Struct_TypeDef plateau;
 	 
 	//Timer pour delay
 	MyTimer_Struct_TypeDef delay;
-	 
-	//GPIOs pour tx, rx usart et signe plateau
-	MyGPIO_Struct_TypeDef gpio_reception;
-	MyGPIO_Struct_TypeDef gpio_transmission;
-	MyGPIO_Struct_TypeDef gpio_signe;
 	
 	//Configuration des timers 
-	timer_in.Timer = TIM1;
-	timer_in.shortARR = 1439; //degrés*4 pour un tour (mod 720 automatique) car deux channels de comptage 
+	timer_in.Timer = TIM_GIROUETTE; //correspond au TIM1
+	timer_in.shortARR = ANGLE_MAX; //degrés*4 pour un tour (mod 720 automatique) car deux channels de comptage 
 	timer_in.shortPSC = 0;
 	
-	timer_pwm.Timer = TIM4;
-	timer_pwm.shortARR = 39999; //pour avoir bonne résolution de PWM à 20 ms
-	timer_pwm.shortPSC = 35; 
+	timer_pwm.Timer = TIM_PWM_VOILES; //correspond au TIM4
+	timer_pwm.shortARR = ARR_PWM_20MS; //pour avoir bonne résolution de PWM à 20 ms
+	timer_pwm.shortPSC = PSC_PWM_20MS; 
 	 
-	delay.Timer = TIM3; //pour avoir une période de 1 us
-	delay.shortARR = 71;
-	delay.shortPSC = 0;
+	delay.Timer = TIM_DELAY; 
+	delay.shortARR = ARR_1MS; //pour avoir une période de 1 us
+	delay.shortPSC = PSC_1MS;
 	
-	plateau.Timer = TIM2;
-	plateau.shortARR = 9999; //Bonne résolution PWM à 100 ms
-	plateau.shortPSC = 719;
-	
-	//Le clock pour les ports A et C (non nécessaire en principe)
-	//RCC->APB2ENR |= 10100; 
+	plateau.Timer = TIM_PWM_100MS;
+	plateau.shortARR = ARR_PWM_100MS; //Bonne résolution PWM à 100 ms
+	plateau.shortPSC = PSC_PWM_100MS;
 	
 	//Config GPIOs pour la communication USART
-	gpio_reception.GPIO_Conf=In_Floating;
-	gpio_reception.GPIO=GPIOB;
-	gpio_reception.GPIO_Pin=11;
-	MyGPIO_Init (&gpio_reception);
+	GPIO_TX_Config();
+	GPIO_RX_Config();
 	
-	gpio_transmission.GPIO_Conf=AltOut_Ppull;
-	gpio_transmission.GPIO=GPIOB;
-	gpio_transmission.GPIO_Pin=10;
-	MyGPIO_Init (&gpio_transmission);
-	
-	//Config GPIO pour le signe du plateau
-	gpio_signe.GPIO_Conf=Out_Ppull;
-	gpio_signe.GPIO=GPIOB;
-	gpio_signe.GPIO_Pin=8;
-	MyGPIO_Init (&gpio_signe); 
-	
-	//Configuration du timer 1 girouette en input compare mode
+	//Configuration du timer 1 pour girouette en encoder input mode
 	Configuration(&timer_in);
 	
 	//Configuration du SPI
@@ -112,18 +93,20 @@ int main(void)
 	adxl345_write(OFSZ,0); //mise à zéro
 	adxl345_read(OFSZ, dataoff);
 	
-	
 	//Configuration du timer 4 channel 1 en PWM (PB6 servo voiles)
 	MyTimer_Base_Init(&timer_pwm);
 	MyTimer_PWM(timer_pwm.Timer, 1);
-	change_ratio(timer_pwm.Timer, 0.05, 1);
+	change_ratio(timer_pwm.Timer, REPOS_VOILES, 1);
 	
 	//Configuration du timer 3 pour le delay
 	MyTimer_Base_Init(&delay);
 	
-	//Configuration timer 2 vitesse plateau en PWM (PA0 moteur)
+	//Configuration timer 2 vitesse plateau en PWM (CH1 - PA0 moteur)
 	MyTimer_Base_Init(&plateau);
 	MyTimer_PWM(plateau.Timer, 1);
+	
+	//Configuration du GPIO PB8 pour le signe
+	Config_GPIOsigne();
 	
 	//Configuration de l'USART 3 en émetteur et récepteur
 	configure_usart3_9600bps();
@@ -135,63 +118,64 @@ int main(void)
 	MyTimer_Base_Start(delay.Timer);
 	MyTimer_Base_Start(plateau.Timer);
 	
-	//Mise à zero de la girouette 
-	//Config du GPIO pour la mise à zero
-	port_zero.GPIO = GPIOA;
-	port_zero.GPIO_Pin = 10;
-	port_zero.GPIO_Conf = In_Floating;
-	MyGPIO_Init(&port_zero);
 	//Activation de l'interruption sur le pin PA10 (voir où est le zero pour mettre le déphasage) PA2
 	Active_IT_Zero(&Remise_zero);
 	
-	//Calibration(&timer_in); autre forme de faire moins propre
-	
+	//Retard pour garantir mise en place
 	Delay_ms(100);
-	//MyGPIO_Set(gpio_signe.GPIO, gpio_signe.GPIO_Pin);
 	
+	
+	/***** Entrée dans la boucle infinie ********/
 	
 	do{
 		
-		//Check anti-chavirement (F4)
-		adxl345_read(DATAX0,RxData);
-		x = ((RxData[1]<<8)|RxData[0]); // DATA X0, X1
-		y = ((RxData[3]<<8)|RxData[2]); // DATA Y0, Y1
-		z = ((RxData[5]<<8)|RxData[4]); // DATA Z0, Z1
+		//Communication infos angle de vent(F3) tous les 3 secondes
+		angle = (timer_in.Timer->CNT); 
+		infos_angle(&angle);
+		
+		//Boucle 10 fois pour faire environ 3 secondes
+		for (j=0; j<10; j++)
+		{
+			//Check anti-chavirement (F4) -> faire une seule fonction?
+			adxl345_read(DATAX0,RxData);
+			x = ((RxData[1]<<8)|RxData[0]); // DATA X0, X1
+			y = ((RxData[3]<<8)|RxData[2]); // DATA Y0, Y1
+			z = ((RxData[5]<<8)|RxData[4]); // DATA Z0, Z1
 
-		
-		// Scale Factor for Xout, Yout and Zout is 7.8 mg/LSB for a +-4g, 10-bit resolution
-		// ==> multiply by 0.0078 to get real acceleration values in g
-		
-		x_acc= x * 0.0078; 
-		y_acc= y * 0.0078;
-		z_acc= z * 0.0078 -1; //-1 à mettre??
-		result = acos(z_acc)*180/(atan(1)*4);
-		
-		//Communciation USART pour vitesse (F2)
-		Plateau();
-		Delay_ms(300);
-		
-		if (acos(z_acc)*180/(atan(1)*4)>= 40){
-			change_ratio(timer_pwm.Timer, 0.05, 1); //repos des voiles (on les mets à 0º)
-			//Alerte de chavirement
-			alerte(10);
-			for(i=0; i<sizeof(data_chavirement);i++){
-				Delay_ms(50);
-				alerte(data_chavirement[i]);
-			}
-		} else {	
+			// Scale Factor for Xout, Yout and Zout is 7.8 mg/LSB for a +-4g, 10-bit resolution
+			// ==> multiply by 0.0078 to get real acceleration values in g
 			
-			//Bordage des voiles automatique (F1)
-			for (i=0; i<5; i++){
-				//Bordage des voiles (F1)
-				angle = timer_in.Timer->CNT; //récupère valeur de l'angle entre 0 et 720
-				ratio = ratio_moteur(angle); //variable utilisé pour supervision en debug
-				change_ratio(timer_pwm.Timer, ratio_moteur(angle), 1); //change l'angle du servo selon la valeur de l'angle
-				Delay_ms(20);
+			x_acc= x * 0.0078; 
+			y_acc= y * 0.0078;
+			z_acc= z * 0.0078 ; //-1 à mettre??
+			result = acos(z_acc)*180/(atan(1)*4);
+			
+			//Communication USART pour vitesse (F2)
+			Plateau();
+			
+			Delay_ms(200);
+			
+			if (acos(z_acc)*180/(atan(1)*4)>= 40)
+			{
+				//Anti-chavirement
+				change_ratio(timer_pwm.Timer, 0.05, 1); //repos des voiles (on les mets à 0º)
+				//Alerte de chavirement
+				send(data_chavirement);
+			} 
+			else 
+			{	
+				//Bordage des voiles automatique (F1) en boucle pour environ 100 ms
+				for (i=0; i<5; i++)
+				{
+					angle = timer_in.Timer->CNT; //récupère valeur de l'angle entre 0 et 720
+					ratio = ratio_moteur(angle); //variable utilisé pour supervision en debug
+					change_ratio(timer_pwm.Timer, ratio_moteur(angle), 1); //change l'angle du servo selon la valeur de l'angle
+					Delay_ms(20);
+				}
 			}
 		}
-				
 		
+						
 	}while(1);
 	
 }

@@ -10,7 +10,8 @@
 .\objects\main.o: .\Include\MyGPIO.h
 .\objects\main.o: .\Include\MyTimer.h
 .\objects\main.o: .\Include\MyAngles.h
-.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\main.o: .\Include\AntiChavirement.h
-.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\objects\main.o: .\Include\direction.h
+.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\main.o: .\Include\Antichavirement.h
+.\objects\main.o: .\Include\plateau.h
