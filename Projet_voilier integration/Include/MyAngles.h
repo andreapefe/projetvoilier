@@ -39,6 +39,6 @@ int Calibration(MyTimer_Struct_TypeDef*timer);
 float ratio_moteur(int angle_vent);
 
 //Prend l'angle de la girouette et indique ou nous sommes
-void infos_angle(int angle);
+void infos_angle(int * anglep);
 
 #endif

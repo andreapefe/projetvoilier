@@ -98,9 +98,6 @@ float ratio_moteur(int angle_vent) //valeur de l'angle entre 0 et 720 demi-degré
 	return 	((angle_moteur/90))/20; //verificar si es de 0 a 90 o de 0 a 180 (/180) y +1.5ms
 }
 
-
-void infos_angle(int angle)
-{
 	int data_allure_vent_debout[SIZE_MESSAGE]={32,32,65,76,76,85,82,69,32,58,32,86,69,78,84,32,68,69,66,79,85,84};
 	int data_allure_au_pres[SIZE_MESSAGE]={32,32,65,76,76,85,82,69,32,58,32,65,85,32,80,82,69,83};
 	int data_allure_bon_plein[SIZE_MESSAGE]={32,32,65,76,76,85,82,69,32,58,32,66,79,78,32,80,76,69,73,78};
@@ -109,6 +106,10 @@ void infos_angle(int angle)
 	int data_allure_largue[SIZE_MESSAGE]={32,32,65,76,76,85,82,69,32,58,32,76,65,82,71,85,69};
 	int data_allure_grand_largue[SIZE_MESSAGE]={32,32,65,76,76,85,82,69,32,58,32,71,82,65,78,68,32,76,65,82,71,85,69};
 	int data_allure_vent_arriere[SIZE_MESSAGE]={32,32,65,76,76,85,82,69,32,58,32,65,82,82,73,69,82,69};
+
+void infos_angle(int * anglep)
+{
+	int angle = *anglep;
 	
 	//Défintion des zones selon le schéma donné par le cahier de charges
 	if ((0<=(float)angle/4 & angle<40) | ((float)angle/4>=320))

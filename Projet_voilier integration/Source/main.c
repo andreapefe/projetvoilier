@@ -44,7 +44,7 @@ int main(void)
  {
 	//Variables auxiliaires
 	int angle;
-	int i;
+	int i, j;
 	
 	/**** Configuration ******/
 	 
@@ -128,8 +128,13 @@ int main(void)
 	/***** Entrée dans la boucle infinie ********/
 	
 	do{
+		
+		//Communication infos angle de vent(F3) tous les 3 secondes
+		angle = (timer_in.Timer->CNT); 
+		infos_angle(&angle);
+		
 		//Boucle 10 fois pour faire environ 3 secondes
-		for (i=0; i<10; i++)
+		for (j=0; j<10; j++)
 		{
 			//Check anti-chavirement (F4) -> faire une seule fonction?
 			adxl345_read(DATAX0,RxData);
@@ -142,7 +147,7 @@ int main(void)
 			
 			x_acc= x * 0.0078; 
 			y_acc= y * 0.0078;
-			z_acc= z * 0.0078 -1; //-1 à mettre??
+			z_acc= z * 0.0078 ; //-1 à mettre??
 			result = acos(z_acc)*180/(atan(1)*4);
 			
 			//Communication USART pour vitesse (F2)
@@ -170,9 +175,6 @@ int main(void)
 			}
 		}
 		
-		//Communication infos angle de vent(F3) tous les 3 secondes
-		angle = (timer_in.Timer->CNT); 
-		infos_angle(angle);
 						
 	}while(1);
 	
