@@ -8,12 +8,15 @@ c'est les seuls pour lesquels j'ai implémenté cette fonctionnalité
 
 //librairies
 #include "stm32f10x.h"
+#include "stdio.h"
 #include "MyGPIO.h"
 #include "MyTimer.h"
 #include "MyAngles.h"
 #include "AntiChavirement.h" 
 #include "direction.h" 
 #include "plateau.h"
+#include "ADC.h"
+#include "Batterie.h"
 
 //Varibles globales pour le SPI
 uint8_t RxData[6]; //Reception data
@@ -24,9 +27,12 @@ uint8_t dataoff[1];
 //Variables pour surveiller en mode simulé
 float ratio;
 float result;
+int batterie_voilier;
 
 //Messages en format ASCII
 int data_chavirement[SIZE_MESSAGE]={32,32,67,72,65,86,73,82,69,77,69,78,84,32,68,69,84,69,67,84,69};
+int batterie_tablette[15]={32,32,66,97,116,116,101,114,105,101,58};
+int *batterie_pourcentage_ascii;
 
 //Gestion de l'interruption pour remettre à zero la girouette
 void Remise_zero(void)
@@ -37,6 +43,7 @@ void Remise_zero(void)
 		EXTI->PR |= (EXTI_PR_PR10); //mise en pending (en cours de traitement)
 	}
 }
+
 
 
 //Programme principale
@@ -74,6 +81,11 @@ int main(void)
 	plateau.Timer = TIM_PWM_100MS;
 	plateau.shortARR = ARR_PWM_100MS; //Bonne résolution PWM à 100 ms
 	plateau.shortPSC = PSC_PWM_100MS;
+	
+	//Config Batterie
+	MyBatterie_Init();
+	
+	
 	
 	//Config GPIOs pour la communication USART
 	GPIO_TX_Config();
@@ -128,6 +140,23 @@ int main(void)
 	/***** Entrée dans la boucle infinie ********/
 	
 	do{
+		// Batterie
+		
+		batterie_voilier=Pourcentage_Batt();
+		batterie_pourcentage_ascii=ascii_to_numbers(batterie_voilier);
+		if(batterie_voilier==100){
+					batterie_tablette[11]=	batterie_pourcentage_ascii[2];
+					batterie_tablette[12]=	batterie_pourcentage_ascii[1];
+					batterie_tablette[13]=	batterie_pourcentage_ascii[0];
+					batterie_tablette[14]=37;
+		}else{
+					batterie_tablette[11]=	batterie_pourcentage_ascii[1];
+					batterie_tablette[12]=	batterie_pourcentage_ascii[0];
+					batterie_tablette[13]=37;
+			    batterie_tablette[14]=NULL;
+		}
+		send(batterie_tablette);
+
 		
 		//Communication infos angle de vent(F3) tous les 3 secondes
 		angle = (timer_in.Timer->CNT); 
